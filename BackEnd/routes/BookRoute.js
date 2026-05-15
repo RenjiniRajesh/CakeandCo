@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/BookController');
+const AuthMiddleware = require('../middlewares/Middleware');
+router.post('/createbook', AuthMiddleware, controller.createBook);
+router.get('/viewbooks', controller.viewBooks);
+router.put('/updatebook/:id', controller.updateBook);
+router.delete('/deletebook/:id', controller.deleteBook);
+router.get('/viewbook/:id', controller.viewBook);
+module.exports = router;
