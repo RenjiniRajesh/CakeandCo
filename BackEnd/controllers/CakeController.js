@@ -1,5 +1,5 @@
 const Book = require('../models/BookModel');
-const createBook = async (req, res) => {
+const createCake = async (req, res) => {
     try {
         const { bookId, title, author } = req.body;
         const newBook = new Book({ bookId, title, author });
