@@ -6,7 +6,14 @@ connectDB();
 const BookRoutes = require('./routes/BookRoute');
 const UserRoutes = require('./routes/UserRoute');
 const cors = require('cors')
-app.use(cors())
+const cookieParser=require('cookie-parser')
+
+app.use(cookieParser())
+app.use(cors({
+    origin:"http://localhost:5174/",
+    credentials:true
+}))
+
 app.use(express.json());
 app.use('/books', BookRoutes);
 app.use('/users', UserRoutes);

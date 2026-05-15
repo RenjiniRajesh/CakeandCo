@@ -8,10 +8,11 @@ const BGimg = styled.div`
     background-repeat: no-repeat;
     width: 100%;
     min-height: 100vh;
+    position: fixed;
+    z-index: -1;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: flex-end;
-    padding: 3em 6em;
     box-sizing: border-box;
     width: 100%;
     flex-wrap: wrap;
@@ -21,7 +22,7 @@ const BGimg = styled.div`
 const Container = styled.div`
     width: 100%;
     max-width: 500px;
-    /* margin: auto; */
+    margin: 8vh 5vw;
     border: 2px solid #ffffff;
     border-radius: 12px;
     box-shadow: 0 0 12px rgb(59 36 36 / 50%);
@@ -83,6 +84,9 @@ const Input = styled.input`
         border-bottom: 3px solid #0091ff;
         transition: all 0.3s ease;
     }
+        &::placeholder{
+        font-family: Montserrat;
+    }
 `;
 
 const SignupBtn = styled.button`
@@ -120,17 +124,17 @@ function Signup() {
                         <label htmlFor="name">Name : </label>
                         <Input type="text" id="name" placeholder="Name" />
                     </FormDiv>
-                    <FormDiv>
+                    {/* <FormDiv>
                         <label htmlFor="username">Username : </label>
                         <Input type="text" id="username" placeholder="Username" />
+                    </FormDiv> */}
+                    <FormDiv>
+                        <label htmlFor="phone">Phone : </label>
+                        <Input type="tel" id="phone" placeholder="Phone" />
                     </FormDiv>
                     <FormDiv>
                         <label htmlFor="email">Email :  </label>
                         <Input type="email" id="email" placeholder="Email" />
-                    </FormDiv>
-                    <FormDiv>
-                        <label htmlFor="phone">Phone : </label>
-                        <Input type="tel" id="phone" placeholder="Phone" />
                     </FormDiv>
                     <FormDiv>
                         <label htmlFor="password">Password : </label>

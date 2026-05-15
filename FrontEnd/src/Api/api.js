@@ -9,3 +9,14 @@ export const members = async()=>{
     const membersApi = await fetch(`${baseurl}/users/viewusers`);
     return membersApi.json();
 }
+
+export const Loginuser=async(postdata)=>{
+    const res=await fetch(`${baseurl}/users/login`,{
+        method:"POST",
+        headers:{
+            "content-Type":"application/json"
+        },
+        body:JSON.stringify(postdata)
+    })
+    return res.json()
+}

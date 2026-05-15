@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import img from '../images/LoginBG1.jpg';
+import { useState } from "react";
+import { Loginuser } from "../Api/api";
+
 
 const BGimg = styled.div`
     background-image: url(${img});
@@ -7,22 +10,23 @@ const BGimg = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
-    min-height: 100vh; 
+    min-height: 87vh;
+    position: fixed;
+    z-index: -1;
     display: flex;
-    align-items: end;
-    justify-content: center;
-    padding: 1em;
+    align-items: start;
+    justify-content: right;
+    padding: 1em 5em;
     box-sizing: border-box;
 `;
 
 const Container = styled.div`
     width: 100%;
-    max-width: 450px; 
-    margin: auto;
-    margin-top: 30vh;
+    max-width: 450px;
     border: 2px solid #ffffff;
     border-radius: 12px;
-    box-shadow: 0 0 12px rgba(219, 32, 229, 0.5);
+    margin-top: 15vh;
+    box-shadow: 0 0 12px rgb(59 36 36 / 50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,38 +45,34 @@ const Form = styled.form`
 
 const FormDiv = styled.div`
     display: flex;
-    flex-direction: column; /* Stack on mobile */
-    font-family: 'Montserrat', sans-serif;
+    flex-direction: column; /* Stack vertically for better mobile scaling */
     gap: 0.5em;
-    font-size: 1.2em;
+    font-family: 'Montserrat', sans-serif;
     width: 100%;
-    color: #ffffff;
-    font-weight: 500;
-
+    color: #ae4d8e;
+    
     @media (min-width: 600px) {
-        flex-direction: row; /* Side-by-side on desktop */
+        flex-direction: row; /* Side-by-side on larger screens */
         align-items: center;
         justify-content: space-between;
-        gap: 1em;
     }
 
     & label {
+        font-size: 1rem;
         @media (min-width: 600px) {
-            width: 30%;
-            text-align: right;
-            text-shadow: 0px 0px 2px #e600ff;
+            width: 35%;
         }
     }
 `;
 
 const Input = styled.input`
     padding: 0.5em;
-    font-size: 1.1rem;
-    width: 100%; /* Full width for the container/stack */
+    font-size: 1rem;
+    // width: 100%;
     background-color: transparent;
     border: none;
-    border-bottom: 3px solid #e600ff;
-    color: #000;
+    border-bottom: 2px solid #d0acc5;
+    color: #ffffff;
     box-sizing: border-box;
 
     @media (min-width: 600px) {
@@ -83,20 +83,17 @@ const Input = styled.input`
         outline: none;
         border-bottom: 3px solid #0091ff;
         transition: all 0.3s ease;
-        color: black;
     }
-         &::placeholder {
-    color: #888;
-    font-family: 'Montserrat', sans-serif;
-    opacity: 0.7;
-  }
+    &::placeholder{
+        font-family: Montserrat;
+    }
 `;
 
 const LoginBtn = styled.button`
     margin: 1em auto;
     padding: 0.5em;
     font-size: 1.2em;
-    background-color: #e600ff;
+    background-color: #a04a83;
     color: white;
     border: none;
     border-radius: 8px;
@@ -108,26 +105,59 @@ const LoginBtn = styled.button`
 
     &:hover {
         transform: scale(1.05);
-        background-color: #0091ff;
-        box-shadow: 0 4px 12px rgba(0, 145, 255, 0.4);
+        background-color: #df64b5;
+        box-shadow: #a04a83;
     }
 `;
 
-function Login() {
+const Login = () => {
+    const [form, setform] = useState({
+        email: "",
+        password: "",
+    });
+
+    const handlechange = (e) => {
+        setform({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    // backend connection
+
+    const handlesubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const res = await Loginuser(form);
+            if (res.success) {
+                setTimeout(() => {
+                    setform({ email: "", password: "" });
+                }, 1000)
+            } else {
+                console.log("error");
+            };
+        } catch (error) {
+            console.log(error);
+
+        }
+    };
     return (
         <BGimg>
             <Container>
-
-                <h1 style={{ color: 'white', textShadow: '0px 0px 6px #e600ff', fontSize: '3em', paddingBottom: '5px', fontFamily: 'Montserrat', fontWeight: '700' }}>Login</h1>
-
-                <Form>
+                <u style={{ color: '#e26ca7' }}>
+                    <h1 style={{ color: '#9f7b95', fontSize: '3em', paddingBottom: '5px', fontFamily: 'Montserrat', fontWeight: '700' }}>
+                        Login
+                    </h1>
+                </u>
+                <Form action="" onsubmit={handlesubmit}>
                     <FormDiv>
                         <label htmlFor="username">Username:</label>
-                        <Input type="text" id="username" placeholder="Username" />
+                        <Input type="email" id="username" name="email" placeholder="Email" value={form.email} onChange={handlechange} />
                     </FormDiv>
                     <FormDiv>
                         <label htmlFor="password">Password:</label>
-                        <Input type="password" id="password" placeholder="Password" />
+                        <Input type="password" id="password" placeholder="Password" name="password" value={form.password} onChange={handlechange} />
                     </FormDiv>
                     <LoginBtn type="submit">Login</LoginBtn>
                 </Form>
