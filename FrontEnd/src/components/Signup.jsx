@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import img from '../images/signupBG1.jpg';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Signupuser} from "../Api/api"
+
 
 
 const BGimg = styled.div`
@@ -72,7 +76,7 @@ const Input = styled.input`
     background-color: transparent;
     border: none;
     border-bottom: 2px solid #d0acc5;
-    color: #ffffff;
+    color: #a04a83;
     box-sizing: border-box;
 
     @media (min-width: 600px) {
@@ -81,7 +85,7 @@ const Input = styled.input`
 
     &:focus {
         outline: none;
-        border-bottom: 3px solid #0091ff;
+        border-bottom: 3px solid #890370;
         transition: all 0.3s ease;
     }
         &::placeholder{
@@ -110,40 +114,70 @@ const SignupBtn = styled.button`
     }
 `;
 
-function Signup() {
+
+
+const Signup =()=> {
+    const navigate=useNavigate()
+    const[form,setform]=useState({
+        name:"",phone:"",email:"",password:""
+    })
+
+    const handlechange=(e)=>{
+        setform({
+            ...form,
+            [e.target.name]:e.target.value
+        });
+    };
+
+    // connect backend
+
+    const handlesubmit= async(e)=>{
+        e.preventDefault();
+        try{
+            const res= await Signupuser(form);
+            if(res.success){
+                console.log("created successfully");
+                
+                setTimeout(()=>{
+                    navigate('/login')
+                    setform({
+                        name:"",phone:"",email:"",password:""
+                    });
+                },1000);
+            }else{
+                console.log("error");
+            };
+        }catch(error){
+            console.log(error);
+            
+        };  
+    };
     return (
         <BGimg>
             <Container>
-                <u style={{ color: '#e26ca7' }}>
+        
                     <h1 style={{ color: '#9f7b95', fontSize: '3em', paddingBottom: '5px', fontFamily: 'Montserrat', fontWeight: '700' }}>
                         Signup
                     </h1>
-                </u>
-                <Form>
+            
+                <Form action="" onSubmit={handlesubmit}>
                     <FormDiv>
                         <label htmlFor="name">Name : </label>
-                        <Input type="text" id="name" placeholder="Name" />
+                        <Input type="text" id="name" placeholder="Name" name="name" value={form.name} onChange={handlechange} />
                     </FormDiv>
-                    {/* <FormDiv>
-                        <label htmlFor="username">Username : </label>
-                        <Input type="text" id="username" placeholder="Username" />
-                    </FormDiv> */}
                     <FormDiv>
                         <label htmlFor="phone">Phone : </label>
-                        <Input type="tel" id="phone" placeholder="Phone" />
+                        <Input type="text" id="phone" placeholder="Phone" name="phone" value={form.phone} onChange={handlechange}/>
                     </FormDiv>
                     <FormDiv>
                         <label htmlFor="email">Email :  </label>
-                        <Input type="email" id="email" placeholder="Email" />
+                        <Input type="email" id="email" placeholder="Email" name="email" value={form.email} onChange={handlechange}/>
                     </FormDiv>
                     <FormDiv>
                         <label htmlFor="password">Password : </label>
-                        <Input type="password" id="password" placeholder="Password" />
+                        <Input type="password" id="password" placeholder="Password" name="password" value={form.password} onChange={handlechange}/>
                     </FormDiv>
-                    <FormDiv>
-                        <label htmlFor="confirmPassword">Confirm Password :</label>
-                        <Input type="password" id="confirmPassword" placeholder="Confirm Password" />
-                    </FormDiv>
+                    
                     <SignupBtn type="submit">Sign Up</SignupBtn>
                 </Form>
             </Container>

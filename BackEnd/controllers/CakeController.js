@@ -1,64 +1,64 @@
-const Book = require('../models/BookModel');
+const Cake = require('../models/CakeModel');
 const createCake = async (req, res) => {
     try {
-        const { bookId, title, author } = req.body;
-        const newBook = new Book({ bookId, title, author });
-        await newBook.save();
-        res.status(201).json({ msg: "Book created successfully", book: newBook });
+        const { cakeName, description, price } = req.body;
+        const newCake = new Cake({ cakename, description, price });
+        await newCake.save();
+        res.status(201).json({ msg: "Cake Details Created Successfully", cake: newCake });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create book' });
+        res.status(500).json({ error: 'Failed to create Cake' });
     }
 };
 
-const viewBooks = async (req, res) => {
+const viewCakes = async (req, res) => {
     try {
-        const books = await Book.find();
-        res.status(200).json({ msg: "Books", data: books });
+        const cake = await Cake.find();
+        res.status(200).json({ msg: "Cakes", data: cake });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to view books' });
+        res.status(500).json({ error: 'Failed to view Cake ' });
     }
 }
 
-const updateBook = async (req, res) => {
+const updateCake = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatebook = await Book.findByIdAndUpdate(id, req.body, { new: true });
-        if (!updatebook) {
-            return res.status(404).json({ error: 'Book not found' });
+        const updatecake = await Cake.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatecake) {
+            return res.status(404).json({ error: 'Cake not found' });
         }
-        res.status(200).json({ msg: "Book updated successfully", data: updateBook });
+        res.status(200).json({ msg: "Cake updated successfully", data: updateCake });
     }
     catch (error) {
-        res.status(500).json({ error: 'Failed to update book' });
+        res.status(500).json({ error: 'Failed to update cake' });
     };
 }
 
-const deleteBook = async (req, res) => {
+const deleteCake = async (req, res) => {
     try {
         const { id } = req.params;
-        const deleteBook = await Book.findByIdAndDelete(id);
-        if (!deleteBook) {
-            return res.status(404).json({ error: 'Book not found' });
+        const deletecake = await Cake.findByIdAndDelete(id);
+        if (!deletecake) {
+            return res.status(404).json({ error: 'cake not found' });
         }
-        res.status(200).json({ msg: "Book deleted successfully", data: deleteBook });
+        res.status(200).json({ msg: "cake deleted successfully", data: deleteCake });
     }
     catch (error) {
-        res.status(500).json({ error: 'Failed to delete book' });
+        res.status(500).json({ error: 'Failed to delete cake' });
     };
 }
 
-const viewBook = async (req, res) => {
+const viewCake = async (req, res) => {
     try {
         const { id } = req.params;
-        const book = await Book.findById(id);
-        if (!book) {
-            return res.status(404).json({ error: 'Book not found' });
+        const cake = await Cake.findById(id);
+        if (!cake) {
+            return res.status(404).json({ error: 'Cake not found' });
         }
-        res.status(200).json({ msg: "Book details", data: book });
+        res.status(200).json({ msg: "Cake details", data: cake });
 
     } catch (error) {
         res.status(500).json({ error: 'Server Error' });
     }
 }
 
-module.exports = { createBook, viewBooks, updateBook, deleteBook, viewBook };
+module.exports = { createCake, viewCakes, updateCake, deleteCake, viewCake };

@@ -3,19 +3,19 @@ const app = express();
 require('dotenv').config();
 const connectDB = require('./config/db');
 connectDB();
-const BookRoutes = require('./routes/BookRoute');
+const CakeRoutes = require('./routes/CakeRoute');
 const UserRoutes = require('./routes/UserRoute');
 const cors = require('cors')
 const cookieParser=require('cookie-parser')
 
 app.use(cookieParser())
 app.use(cors({
-    origin:"http://localhost:5174/",
+    origin:"http://localhost:5173",
     credentials:true
 }))
 
 app.use(express.json());
-app.use('/books', BookRoutes);
+app.use('/cake', CakeRoutes);
 app.use('/users', UserRoutes);
 
 const port = process.env.PORT;

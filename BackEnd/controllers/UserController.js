@@ -3,16 +3,17 @@ const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken')
 
 const createUser = async (req, res) => {
-    const { userId, name, email, password, phone } = req.body;
+    
+    const {  name, phone,email, password } = req.body;
     try {
         const existingUser = await User.findOne({ phone });
         if (existingUser) {
             return res.status(400).json({ error: 'User with this phone number already exists' });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ userId, name, email, password: hashedPassword, phone });
+        const newUser = new User({  name, phone ,email, password: hashedPassword });
         await newUser.save();
-        res.status(201).json({ msg: "User created successfully", user: newUser });
+        res.status(201).json({ msg: "User created successfully", user: newUser ,success:true});
     } catch (error) {
         res.status(500).json({ error: 'Failed to create user' });
     }
@@ -72,14 +73,14 @@ const Login = async (req, res) => {
 
         // Setting Cookie
 
-        res.cookie("token",token{
+        res.cookie("token",token,{
             httpOnly:true,
             secure:true,
             sameSite:"strict",
             maxAge:24*60*60*1000
         })
         
-        res.status(200).json({ msg: "Log In Successfully",token:token })
+        res.status(200).json({ msg: "Log In Successfully",token:token,success:true })
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: "Server Error" })

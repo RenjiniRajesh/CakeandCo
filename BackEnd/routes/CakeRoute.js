@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/CakeController');
+const AuthMiddleware = require('../middlewares/Middleware');
+router.post('/createcake', AuthMiddleware, controller.createCake);
+router.get('/viewcake', controller.viewCakes);
+router.put('/updatecake/:id', controller.updateCake);
+router.delete('/deletecake/:id', controller.deleteCake);
+router.get('/viewcake/:id', controller.viewCake);
+module.exports = router;

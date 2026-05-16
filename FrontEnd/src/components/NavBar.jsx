@@ -30,12 +30,13 @@ const NavLinks = styled.ul`
     padding: 0;
     width: 40%;
     font-family: Montserrat;
-    font-weight: 200;
+    // font-weight: 200;
     justify-content: space-around;
 `;
 const List = styled.li`
-    color: #ffffff;
-    font-size: 1.2rem;
+    color: #a04a83;
+    font-size: 1.4rem;
+    font-weight:30px;
     text-decoration: none;
     cursor: pointer;
     &:hover {
@@ -103,7 +104,7 @@ const NavBarComponent = () => {
         {/* View All Members */}
       </NavLinks>
       <Container>
-        <Link to="/login"> <Login >Login</Login></Link>
+       <Link to="/login"> <Login >Login</Login></Link>
         <Link to="/signup"><Signup>Signup</Signup></Link>
       </Container>
     </NavBar>

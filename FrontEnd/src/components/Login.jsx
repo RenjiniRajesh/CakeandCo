@@ -2,6 +2,7 @@ import styled from "styled-components";
 import img from '../images/LoginBG1.jpg';
 import { useState } from "react";
 import { Loginuser } from "../Api/api";
+import { useNavigate } from "react-router-dom";
 
 
 const BGimg = styled.div`
@@ -72,7 +73,7 @@ const Input = styled.input`
     background-color: transparent;
     border: none;
     border-bottom: 2px solid #d0acc5;
-    color: #ffffff;
+    color: #a04a83;
     box-sizing: border-box;
 
     @media (min-width: 600px) {
@@ -81,7 +82,7 @@ const Input = styled.input`
 
     &:focus {
         outline: none;
-        border-bottom: 3px solid #0091ff;
+        border-bottom: 3px solid #890370;
         transition: all 0.3s ease;
     }
     &::placeholder{
@@ -111,15 +112,16 @@ const LoginBtn = styled.button`
 `;
 
 const Login = () => {
+    const navigate=useNavigate()
     const [form, setform] = useState({
         email: "",
-        password: "",
+        password: ""
     });
 
     const handlechange = (e) => {
         setform({
             ...form,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         });
     };
 
@@ -131,7 +133,10 @@ const Login = () => {
         try {
             const res = await Loginuser(form);
             if (res.success) {
+                console.log("login successfully");
+                
                 setTimeout(() => {
+                    navigate('/')
                     setform({ email: "", password: "" });
                 }, 1000)
             } else {
@@ -145,12 +150,12 @@ const Login = () => {
     return (
         <BGimg>
             <Container>
-                <u style={{ color: '#e26ca7' }}>
+    
                     <h1 style={{ color: '#9f7b95', fontSize: '3em', paddingBottom: '5px', fontFamily: 'Montserrat', fontWeight: '700' }}>
                         Login
                     </h1>
-                </u>
-                <Form action="" onsubmit={handlesubmit}>
+                
+                <Form action="" onSubmit={handlesubmit}>
                     <FormDiv>
                         <label htmlFor="username">Username:</label>
                         <Input type="email" id="username" name="email" placeholder="Email" value={form.email} onChange={handlechange} />
