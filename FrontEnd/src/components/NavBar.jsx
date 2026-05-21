@@ -1,5 +1,8 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa"; // cart symbol importing
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit; // This ensures it takes the color of your List or Heading
@@ -19,7 +22,7 @@ const Heading = styled.h1`
     color: #ffffff;
     font-size: 3rem;
     margin: 0;
-    font-family: Montserrat,Playfair Display;
+    font-family:Playfair Display;
     text-decoration: none;
 `;
 const NavLinks = styled.ul`
@@ -34,17 +37,23 @@ const NavLinks = styled.ul`
     justify-content: space-around;
 `;
 const List = styled.li`
-    color: #a04a83;
+    color: #812763;
     font-size: 1.4rem;
     font-weight:30px;
     text-decoration: none;
     cursor: pointer;
-    &:hover {
+    &:hover  {
       transform: scale(1.1);
       font-weight: 500;
       transition: all 0.3s ease;
       text-shadow: 0px 0px 4px #e600ff;
     }
+/* Nammal react-icons upayogikkumbo backend-il athu oru svg element aayittane render aavuka. */
+    /* & svg {
+    color: #890370;
+    font-size: 1.6rem;  
+    transition: color 0.3s ease;
+  } */
 `;
 
 const Login = styled.button`
@@ -87,25 +96,46 @@ const Signup = styled.button`
     }
 `;
 
+/*  Cart-inte mukhalil kaanunna aa cheriya round Number Badge */
+
+const CartBadge = styled.span`
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #890370; /* Deep pink/purple badge background */
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div`
     display: flex;
     gap: 1rem;
 `;
 
 const NavBarComponent = () => {
+  // 4. Added a test state. Change '1' to '0' or any number to test it out!
+  const [cartCount, setCartCount] = useState(0);
+
   return (
     <NavBar>
-      <StyledLink to="/"><Heading>Cake & Co</Heading></StyledLink>
+      <StyledLink to="/"><Heading>Cake & Co.</Heading></StyledLink>
       <NavLinks>
         <StyledLink to="/"><List>Home</List></StyledLink>
-        <StyledLink to="/books"><List>Menu</List></StyledLink>
-        {/* View All Books */}
-        <StyledLink to="/members"><List>Cart</List></StyledLink>
-        {/* View All Members */}
+        <StyledLink to="/viewcakes"><List>Menu</List></StyledLink>
+        {/* View All Cakes */}
+        <StyledLink to="/viewcart"><List><FaShoppingCart/>{cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}</List>
+        </StyledLink>
+        {/* View Cart */}
       </NavLinks>
       <Container>
-       <Link to="/login"> <Login >Login</Login></Link>
-        <Link to="/signup"><Signup>Signup</Signup></Link>
+        <Link to="/login"> <Login >Login</Login></Link>
+
       </Container>
     </NavBar>
   );

@@ -3,7 +3,10 @@ import img from '../images/LoginBG1.jpg';
 import { useState } from "react";
 import { Loginuser } from "../Api/api";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
+
+// login style
 
 const BGimg = styled.div`
     background-image: url(${img});
@@ -111,8 +114,30 @@ const LoginBtn = styled.button`
     }
 `;
 
+const NewReg = styled.ul`
+    color: #c325c3;
+    list-style: none;
+    padding: 0;
+    text-align: center;
+
+    /* React Link custom html tags rendering standard nested standard text */
+    & a {
+        text-decoration: none; 
+        color: #780578;
+        font-weight: bold;
+
+        &:hover {
+            color: #df64b5;
+        }
+    }
+`;
+// ###############################################################
+
+// Login function section
+
+
 const Login = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [form, setform] = useState({
         email: "",
         password: ""
@@ -133,28 +158,41 @@ const Login = () => {
         try {
             const res = await Loginuser(form);
             if (res.success) {
+                // data from backend data:Finduser.role
+                console.log(res.data);
+
+
                 console.log("login successfully");
-                
+                alert("Login Successfull")
+
+
                 setTimeout(() => {
-                    navigate('/')
+                    if (res.data === "admin") {
+                        navigate('/adminhome')
+                    } else {
+                        navigate('/')
+                    }
+
                     setform({ email: "", password: "" });
                 }, 1000)
             } else {
-                console.log("error");
+                console.log("login not successfull,Please try again");
+                alert("Login Not Successfull")
             };
         } catch (error) {
             console.log(error);
 
         }
     };
+    // ########################################################################
     return (
         <BGimg>
             <Container>
-    
-                    <h1 style={{ color: '#9f7b95', fontSize: '3em', paddingBottom: '5px', fontFamily: 'Montserrat', fontWeight: '700' }}>
-                        Login
-                    </h1>
-                
+
+                <h1 style={{ color: '#9f7b95', fontSize: '3em', paddingBottom: '5px', fontFamily: 'Montserrat', fontWeight: '700' }}>
+                    Login
+                </h1>
+
                 <Form action="" onSubmit={handlesubmit}>
                     <FormDiv>
                         <label htmlFor="username">Username:</label>
@@ -165,7 +203,11 @@ const Login = () => {
                         <Input type="password" id="password" placeholder="Password" name="password" value={form.password} onChange={handlechange} />
                     </FormDiv>
                     <LoginBtn type="submit">Login</LoginBtn>
+
                 </Form>
+               <NewReg>
+                    <h3>Not a member?</h3>   <Link to="/signup">Sign up now </Link>
+                </NewReg>
             </Container>
         </BGimg>
     );

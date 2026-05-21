@@ -140,18 +140,22 @@ const Signup =()=> {
                 
                 setTimeout(()=>{
                     navigate('/login')
+                    alert("user created successfully")
                     setform({
                         name:"",phone:"",email:"",password:""
                     });
                 },1000);
             }else{
-                console.log("error");
+                console.log("error ");
             };
         }catch(error){
             console.log(error);
+            alert("user creation failed")
+        
             
         };  
     };
+    
     return (
         <BGimg>
             <Container>
