@@ -1,27 +1,29 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken')
-
+const Data = require('../models/Data')
 const createUser = async (req, res) => {
     
     const {  name, phone,email, password } = req.body;
     try {
-        const existingUser = await User.findOne({ phone });
+        const existingUser = await Data.findOne({ phone });
         if (existingUser) {
-            return res.status(400).json({ error: 'User with this phone number already exists' });
+            return res.status(400).json({ msg: 'User with this phone number already exists' });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({  name, phone ,email, password: hashedPassword });
+        const newUser = await new Data({  name, phone ,email, password: hashedPassword });
         await newUser.save();
         res.status(201).json({ msg: "User created successfully", user: newUser ,success:true});
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create user' });
+        console.log(error);
+        
+        res.status(500).json({ msg:"Failed to create user" ,error});
     }
 };
 
 const viewUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await Data.find();
         res.status(200).json({ msg: "User Details", data: users });
     }
     catch (error) {
@@ -33,7 +35,7 @@ const viewUsers = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const update = await User.findByIdAndUpdate(id, req.body, { new: true });
+        const update = await Data.findByIdAndUpdate(id, req.body, { new: true });
         if (!update) {
             return res.status(400).json({ msg: "User Not Found" });
         }
@@ -47,7 +49,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const del = await User.findByIdAndDelete(id);
+        const del = await Data.findByIdAndDelete(id);
         if (!del) {
             return res.status(400).json({ msg: "User Not Found" });
         }
@@ -61,7 +63,7 @@ const deleteUser = async (req, res) => {
 const Login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const Finduser = await User.findOne({ email });
+        const Finduser = await Data.findOne({ email });
         if (!Finduser) {
             return res.status(400).json({ msg: "User Doesn't Exist" });
         }
@@ -69,7 +71,7 @@ const Login = async (req, res) => {
         if (!MatchPassword) {
             return res.status(400).json({ msg: "Invalid Credentials" });
         }
-        const token = jwt.sign({id:Finduser._id,name:Finduser.name},process.env.SECRET_KEY,{expiresIn:'1h'})
+        const token = jwt.sign({id:Finduser._id,role:Finduser.role,name:Finduser.name},process.env.SECRET_KEY,{expiresIn:'1h'})
 
         // Setting Cookie
 
@@ -80,7 +82,7 @@ const Login = async (req, res) => {
             maxAge:24*60*60*1000
         })
         
-        res.status(200).json({ msg: "Log In Successfully",token:token,success:true })
+        res.status(200).json({ msg: "Log In Successfully",token:token,success:true,data:Finduser.role })
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: "Server Error" })

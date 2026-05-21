@@ -1,9 +1,9 @@
 {
-  "name": "librarymanagement---backend",
+  "name": "cakeshop---backend",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
-  "author": "Manu",
+  "author": "Renjini",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {

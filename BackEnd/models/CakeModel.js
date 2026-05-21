@@ -14,6 +14,10 @@ const CakeSchema = new Schema({
         type: Number,
         required: true
     }
+    // image: {
+    //      type: String,
+    //       required: true 
+    //     }
 }, { timestamps: true });
 
 const CakeModel = mongoose.model('Cake', CakeSchema);
